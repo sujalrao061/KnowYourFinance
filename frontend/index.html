@@ -10,14 +10,7 @@
       href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap"
       rel="stylesheet"
     />
-    <script>
-      // Set the saved or system theme before the first paint so there is no light flash.
-      try {
-        var t = localStorage.getItem("kyf-theme");
-        if (t !== "light" && t !== "dark") t = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-        document.documentElement.setAttribute("data-theme", t);
-      } catch (e) {}
-    </script>
+    <script src="/theme-init.js"></script>
     <title>KnowYourFinance</title>
   </head>
   <body>
