@@ -42,6 +42,11 @@ public final class RedactionUtil {
      */
     private static final Pattern LONG_DIGIT_RUN = Pattern.compile("\\b\\d(?:[ -]?\\d){7,}\\b");
 
+    private static final Pattern EMAIL = Pattern.compile(
+            "(?<![A-Za-z0-9._%+-])[A-Za-z0-9._%+-]++@[A-Za-z0-9-]+(?:\\.[A-Za-z0-9-]+)+");
+    private static final Pattern PHONE = Pattern.compile(
+            "(?<!\\d)(?:\\+?1[ .-]?)?(?:\\(\\d{3}\\)|\\d{3})[ .-]?\\d{3}[ .-]?\\d{4}(?!\\d)");
+
     private RedactionUtil() {
         // utility class - never instantiated
     }
@@ -56,7 +61,9 @@ public final class RedactionUtil {
         if (rawText == null) {
             return new RedactionResult("", false);
         }
-        String redacted = LONG_DIGIT_RUN.matcher(rawText).replaceAll("[REDACTED]");
+        String withoutEmail = EMAIL.matcher(rawText).replaceAll("[REDACTED]");
+        String withoutNumbers = LONG_DIGIT_RUN.matcher(withoutEmail).replaceAll("[REDACTED]");
+        String redacted = PHONE.matcher(withoutNumbers).replaceAll("[REDACTED]");
         boolean changed = !redacted.equals(rawText);
         return new RedactionResult(redacted, changed);
     }
