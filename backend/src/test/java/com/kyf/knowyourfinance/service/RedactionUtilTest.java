@@ -17,6 +17,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class RedactionUtilTest {
 
     @Test
+    void masksContactInformation() {
+        assertEquals("[REDACTED], [REDACTED].", RedactionUtil.redact(
+                "user+tag@example.org, (507) 555-0123.").getText());
+    }
+
+    @Test
     void redactsLongDigitRunsLikeAccountNumbers() {
         var result = RedactionUtil.redact("ACH TRANSFER REF 48217536901");
 
